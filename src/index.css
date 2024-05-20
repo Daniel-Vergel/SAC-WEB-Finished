@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+    font-family: 'Trebuchet'; 
+    src: url('Font/trebuc.ttf') format('truetype'); 
+  }
+
+  @font-face {
+    font-family: 'trebuchetItalic'; 
+    src: url('Font/Trebuchet-MS-Italic.ttf') format('truetype'); 
+  }
+
+  @font-face {
+    font-family: 'roboto'; 
+    src: url('Font/Roboto-Regular.ttf') format('truetype'); 
+  }
+
+  
+  @font-face {
+    font-family: 'verdana'; 
+    src: url('Font/verdana.ttf') format('truetype'); 
+  }
+
+  @font-face {
+    font-family: 'worksans'; 
+    src: url('Font/WorkSans-Regular.ttf') format('truetype'); 
+  }
+
+  @font-face {
+    font-family: 'worksansM'; 
+    src: url('Font/WorkSans-Medium.ttf') format('truetype'); 
+  }
+
+  
+
+
