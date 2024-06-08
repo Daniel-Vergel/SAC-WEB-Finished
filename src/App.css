@@ -1,11 +1,21 @@
-.template-main {
+{/*.template-main {
     grid-template-columns: 200px 1fr;
     grid-template-rows: 60px 1fr;
     grid-template-areas: 
     "header header"
     "slidebar body";
   }
-    
+
+  @media (max-width: 1900px) {
+        .template-main {
+            grid-template-columns: 70px 1fr;
+            grid-template-rows: 60px 1fr;
+            grid-template-areas: 
+            "header header"
+            "slidebar body";
+        }
+    }
+
     .header {
     grid-area: header;
     }
@@ -16,8 +26,10 @@
 
     .slidebar {
     grid-area: slidebar;
-    }
-        
+    }*/}
+    
+       
+     
 
 .template-body {
     grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -32,6 +44,18 @@
     }
 
     @media (max-width: 1400px) {
+
+        .template-body {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 296px 325px 418px  ;
+    grid-template-areas: 
+    "welcome welcome welcome welcome"
+
+    "reporte-efectividad reporte-efectividad reporte-efectividad reporte-efectividad"
+    
+    "actividades actividades actividades actividades"
+  
+    }
         .productividad-equipo {
             display: none !important;
         }
@@ -80,6 +104,21 @@
    
     }
 
+       @media (max-width: 1750px) {
+        .reporte-cuerpo {
+    grid-template-columns: 1fr 1fr  ;
+    grid-template-rows: 249px ;
+    grid-template-areas:
+
+    "productividad aceptacion "
+   
+    }
+        .calificacion {
+            display: none !important;
+        }
+    }
+
+
 .productividad {
     grid-area: productividad ;
 }
@@ -110,6 +149,14 @@
    
 }
 
+  @media (max-width: 1650px) {
+
+        .cards-template2 {
+    display: none !important;
+   
+    }
+}
+
 
     
 .card1 {
@@ -136,3 +183,19 @@
 .card8 {
     grid-area: card8 ;
 }    
+
+/*.szh-menu-button {
+  box-sizing: border-box;
+  padding: 0px;
+  background-color: #ffffff;
+  border: 0px solid transparent;
+  border: none;
+}
+
+.szh-menu-button2 {
+  box-sizing: border-box;
+  padding: 0px;
+  background-color: #ECEDF8;
+  border: 0px solid transparent;
+  border: none;
+}*/
