@@ -1,20 +1,10 @@
-{/*.template-main {
+.template-main {
     grid-template-columns: 200px 1fr;
     grid-template-rows: 60px 1fr;
     grid-template-areas: 
     "header header"
-    "slidebar body";
+    "body body";
   }
-
-  @media (max-width: 1900px) {
-        .template-main {
-            grid-template-columns: 70px 1fr;
-            grid-template-rows: 60px 1fr;
-            grid-template-areas: 
-            "header header"
-            "slidebar body";
-        }
-    }
 
     .header {
     grid-area: header;
@@ -24,46 +14,51 @@
     grid-area: body;
     }
 
-    .slidebar {
-    grid-area: slidebar;
-    }*/}
+   
     
        
      
 
 .template-body {
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows: 296px 325px 418px  ;
+    grid-template-columns: 200px 1fr 1fr 1fr 1fr;
+    grid-template-rows:  296px 325px 418px  ;
     grid-template-areas: 
-    "welcome welcome welcome productividad-equipo"
+    " slidebar welcome welcome welcome productividad-equipo"
 
-    "reporte-efectividad reporte-efectividad reporte-efectividad productividad-equipo"
+    " slidebar reporte-efectividad reporte-efectividad reporte-efectividad productividad-equipo"
     
-    "actividades actividades actividades productividad-equipo"
+    " slidebar actividades actividades actividades productividad-equipo";
+      transition: grid-template-columns 0.3s ease;
   
     }
 
-    @media (max-width: 1400px) {
+    @media (max-width: 1570px) {
 
         .template-body {
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 200px 1fr 1fr 1fr 1fr;
     grid-template-rows: 296px 325px 418px  ;
     grid-template-areas: 
-    "welcome welcome welcome welcome"
+    " slidebar welcome welcome welcome welcome"
 
-    "reporte-efectividad reporte-efectividad reporte-efectividad reporte-efectividad"
+    " slidebar reporte-efectividad reporte-efectividad reporte-efectividad reporte-efectividad"
     
-    "actividades actividades actividades actividades"
+    " slidebar actividades actividades actividades actividades";
+   
   
     }
         .productividad-equipo {
             display: none !important;
         }
     }
+    
 
 
     .welcome {
     grid-area: welcome;
+    }
+
+     .slidebar {
+    grid-area: slidebar;
     }
 
     .reporte-efectividad {
@@ -199,3 +194,16 @@
   border: 0px solid transparent;
   border: none;
 }*/
+
+.progressBarLabel {
+  font-family: "roboto", sans-serif;
+  font-size: 12px;
+  color: #ffffff;
+}
+
+.hiddenLabel {
+  color: transparent;
+  font-size: 0;
+  line-height: 0;
+  visibility: hidden;
+}

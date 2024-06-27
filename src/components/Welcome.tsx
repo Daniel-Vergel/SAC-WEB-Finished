@@ -1,5 +1,3 @@
-import React from 'react'
-
 export const Welcome = () => {
   return (
     <div className="grid grid-cols-2 w-full">
@@ -252,4 +250,4 @@ export const Welcome = () => {
       </div>
     </div>
   );
-}
+};

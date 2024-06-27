@@ -1,5 +1,4 @@
-import React from 'react'
-import { Cell, Pie, PieChart } from 'recharts'
+import { Cell, Pie, PieChart } from "recharts";
 import { ButtonReport } from "./buttom/ButtomReport";
 
 {
@@ -137,4 +136,3 @@ export const IndAceptacion = () => {
     </>
   );
 };
-  

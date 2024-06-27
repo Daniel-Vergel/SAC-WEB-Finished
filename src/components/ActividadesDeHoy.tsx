@@ -1,9 +1,7 @@
-import React from 'react'
 import Select from "react-select";
 
 import { Print } from "./iconos.jsx/Print";
-import { ButtonActivity } from "./complementos/buttom/buttomActivity";
-import { Grilla } from "./complementos/Grilla";
+import { Grilla } from "./complementos/grilla/Grilla";
 
 const optionsList = [
   { value: "listado 1", label: "Listado 1" },
@@ -19,7 +17,7 @@ export const ActividadesDeHoy = () => {
         <div className=" flex ">
           <p className=" font-trebuchet font-bold text-24 text-blue1 ">
             {" "}
-            Actividades de Hoy{" "}
+            Actividades de la semana{" "}
           </p>
         </div>
 
@@ -150,10 +148,9 @@ export const ActividadesDeHoy = () => {
       </div>
 
       {/*Tabla*/}
-      <div className=" ml-10 mr-10 mt-18 overflow-auto rounded-lg shadow ">
+      <div className=" ml-10 mr-10 mt-18 mb-5 overflow-auto  ">
         <Grilla />
       </div>
     </div>
   );
 };
-

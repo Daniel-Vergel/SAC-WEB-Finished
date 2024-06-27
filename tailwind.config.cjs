@@ -171,11 +171,15 @@ module.exports = {
         64: "64px",
         61: "61px",
         60: "60px",
+        56: "56px",
         53: "53px",
+        52: "52px",
         50: "49px",
         46: "46px",
         45: "45px",
         40: "40px",
+        39: "39px",
+        38: "38px",
         35: "35px",
         32: "32px",
         29: "29px",
@@ -304,6 +308,7 @@ module.exports = {
         blue2: "#354D6F",
         blue3: "#E6F3FA",
         blue4: "#3E4EB8",
+        blue5: "#3E587C",
 
         orange1: "#F7A32D",
         orange2: "#EF6A1F",
@@ -347,5 +352,29 @@ module.exports = {
     },
   },
 
-  plugins: [],
+  plugins: [
+    function ({ addUtilities }) {
+      const newUtilities = {
+        ".scrollbar-thin ": {
+          scrollbarWidth: "thin",
+          scrollbarcolor: "rgb(31 29 29) white",
+        },
+        ".scrollbar-webkit": {
+          "&::-webkit-scrollbar": {
+            width: "10px",
+          },
+          "&::-webkit-scrollbar-track": {
+            background: "white",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            backgroundColor: "rgb(196, 196, 196)",
+            borderRadius: "20px",
+            border: "1px solid white",
+          },
+        },
+      };
+
+      addUtilities(newUtilities, ["responsive", "hover"]);
+    },
+  ],
 };

@@ -1,6 +1,7 @@
-import React from 'react'
-import { Cell, Pie, PieChart } from 'recharts'
+import { Cell, Pie, PieChart } from "recharts";
 import { ButtonReport } from "./buttom/ButtomReport";
+import { useQuery } from "@apollo/client";
+import { GET_ACTIVITY_STATE_BY_DATES } from "../../gql/GET-ACTIVITY-BY-DATES";
 
 {
   /* EJEMPLO */
@@ -24,6 +25,19 @@ const data01 = [
 ];
 
 export const IndProductividad = () => {
+  const { data, loading, error } = useQuery(GET_ACTIVITY_STATE_BY_DATES, {
+    variables: {
+      args: {
+        FecIni: "2020-01-01T00:00:00Z",
+        FecFin: "2024-08-01T00:00:00Z",
+      },
+    },
+  });
+
+  const DATA = data?.getActivityStateByDates ?? {};
+
+  console.log(data);
+
   return (
     <>
       {/*frame 973*/}
@@ -168,4 +182,3 @@ export const IndProductividad = () => {
     </>
   );
 };
-  
