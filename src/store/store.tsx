@@ -6,6 +6,7 @@ import { SortingSlice } from "./sortingState/sortingState";
 import { PaginationSlice } from "./paginationSate/paginationState";
 import { AsuntoSlice } from "./asuntoExpandedState.tsx/asuntoState";
 import { SlidebarSlice } from "./slidebarState/slidebarState";
+import { InputMonthsSlice } from "./inputMonths/inputMonthsState";
 
 export const store = configureStore({
   reducer: {
@@ -15,6 +16,7 @@ export const store = configureStore({
     PaginationState: PaginationSlice.reducer,
     asuntoState: AsuntoSlice.reducer,
     slidebarState: SlidebarSlice.reducer,
+    inputMonthsState: InputMonthsSlice.reducer,
   },
 });
 

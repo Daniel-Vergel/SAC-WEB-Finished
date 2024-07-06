@@ -1,28 +1,80 @@
 import { Cell, Pie, PieChart } from "recharts";
 import { ButtonReport } from "./buttom/ButtomReport";
+import { useQuery } from "@apollo/client";
+import { GET_ACTIVITY_REJECT } from "../../gql/GET-ACTIVITY-REJECT";
+import { endOfMonth, startOfMonth } from "./fechas/meses/ThreeMonths/getStartAndEndOfLastThreeMonths";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
+import { endOfMonthSix, startOfMonthSix } from "./fechas/meses/SixMonths/getStartAndEndOfLastSixMonths";
+import { endOfMonthNine, startOfMonthNine } from "./fechas/meses/NineMonths/getStartAndEndOfLastNineMonths";
 
-{
-  /* EJEMPLO */
-}
+
+export const IndAceptacion = () => {
+
+  const { months } = useSelector((state: RootState) => state.inputMonthsState);
+
+
+  // Función para obtener las fechas de inicio y fin según el valor de months
+  const getDatesForMonths = (months: string) => {
+    switch (months) {
+
+      case '6 meses':
+        return { inicio: startOfMonthSix, fin: endOfMonthSix };
+      case '9 meses':
+        return { inicio: startOfMonthNine, fin: endOfMonthNine };
+      default:
+        // Por defecto, devolver 3 meses si el valor no coincide
+        return { inicio: startOfMonth, fin: endOfMonth };
+    }
+  };
+
+  // Obtén las fechas de inicio y fin según el valor de months
+  const { inicio, fin } = getDatesForMonths(months);
+
+  // Convierte las fechas de inicio y fin en objetos Date si es necesario
+  let fechaDeInicio = inicio;
+  let fechaFinal = fin;
+
+  const { data, loading, error } = useQuery(GET_ACTIVITY_REJECT, {
+    variables: {
+      args: {
+        FecIni: fechaDeInicio,
+        FecFin: fechaFinal
+      },
+    },
+  });
+  //console.log(data)
+
+  if (loading) return <p>Cargando...</p>;
+  if (error) return <p>Error: {error.message}</p>;
+
+  const activityData = data?.getActivityRejectByDates[0];
+
 const data01 = [
   {
     name: "Aceptado",
-    value: 118,
+    value: activityData?.totalAceptas || 0,
     color: "#3E4EB8",
   },
   {
     name: "Rechazado",
-    value: 20,
+    value: activityData?.totalRechazadas || 0,    
     color: "#FF4F58",
   },
   {
     name: "Rechazado por vencimiento",
-    value: 10,
+    value: activityData?.totalRechazasPorVencimiento || 0 ,   
     color: "#F7A32D",
   },
 ];
 
-export const IndAceptacion = () => {
+const totalTareas = activityData.total;
+const tareasAceptadas = activityData.totalAceptas;
+
+const efectividad = (tareasAceptadas / totalTareas) * 100;
+
+
+  
   return (
     <>
       {/*frame 973*/}
@@ -69,7 +121,7 @@ export const IndAceptacion = () => {
               {/*frame 1128*/}
               <div className=" w-46 h-28 translate-x-10 ">
                 <p className="grid justify-center font-trebuchet font-bold text-24 text-black1 -mt-5">
-                  80%
+                  {efectividad}% 
                 </p>
               </div>
 
@@ -91,7 +143,7 @@ export const IndAceptacion = () => {
                 <div className=" grid tracking-1  ">
                   Total de actividades asignadas
                 </div>
-                <div className="grid justify-end  tracking-1  ">148</div>
+                <div className="grid justify-end  tracking-1  ">{activityData.total}</div>
               </div>
 
               {/*frame 10*/}
@@ -103,7 +155,7 @@ export const IndAceptacion = () => {
 
                 <div className=" flex ml-23  ">Aceptado</div>
 
-                <div className=" grid justify-end tracking-1  ">118</div>
+                <div className=" grid justify-end tracking-1  ">{activityData?.totalAceptas || 0}</div>
               </div>
 
               {/*frame 13*/}
@@ -115,7 +167,7 @@ export const IndAceptacion = () => {
 
                 <div className=" flex ml-23  ">Rechazado</div>
 
-                <div className=" grid justify-end tracking-1  ">20</div>
+                <div className=" grid justify-end tracking-1  ">{activityData?.totalRechazadas || 0}</div>
               </div>
 
               {/*frame 12*/}
@@ -127,7 +179,7 @@ export const IndAceptacion = () => {
 
                 <div className=" flex ml-23  ">Rechazado por vencimiento</div>
 
-                <div className=" grid justify-end tracking-1  ">10</div>
+                <div className=" grid justify-end tracking-1  ">{activityData?.totalRechazadasPorVencimiento || 0}</div>
               </div>
             </div>
           </div>

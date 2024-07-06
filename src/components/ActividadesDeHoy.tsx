@@ -2,6 +2,11 @@ import Select from "react-select";
 
 import { Print } from "./iconos.jsx/Print";
 import { Grilla } from "./complementos/grilla/Grilla";
+import { useQuery } from "@apollo/client";
+import { GET_ACTIVITY_STATE_BY_DATES } from "../gql/GET-ACTIVITY-BY-DATES";
+import { GET_ACTIVITY_LOAD } from "../gql/GET-ACTIVITY-LOAD";
+import { endOfWeek, startOfWeek } from "./complementos/fechas/semanas/getStartAndEndOfWeek";
+
 
 const optionsList = [
   { value: "listado 1", label: "Listado 1" },
@@ -9,7 +14,83 @@ const optionsList = [
   { value: "listado 3", label: "Listado 3" },
 ];
 
+type ActivityState = {
+  state: string;
+  total: number;
+};
+
+type Data = {
+  getActivityStateByDates: ActivityState[];
+};
+
+interface ActivityLoadModel {
+  activiadesAnteriores: number;
+  activiadesAsignadas: number;
+  activiadesImpactadas: number;
+  activiadesResueltas: number;
+  activiadesTotal: number;
+  perNombres: string;
+  // Puedes agregar otras propiedades si es necesario
+}
+
 export const ActividadesDeHoy = () => {
+  const { data, loading, error } = useQuery<Data>(GET_ACTIVITY_STATE_BY_DATES, {
+    variables: {
+      args: {
+        FecIni: startOfWeek,
+        FecFin: endOfWeek
+      },
+    },
+  });
+
+  const { data: data2, loading: loading2, error: error2 } = useQuery(GET_ACTIVITY_LOAD, {
+    variables: {
+      args: {
+        FecIni: startOfWeek,
+        FecFin:  endOfWeek
+      },
+    },
+  });
+
+
+
+  if (loading) return <p>Cargando...</p>;
+  if (error) return <p>Error: {error.message}</p>;
+
+  
+  if (loading2) return <p>Cargando...</p>;
+  if (error2) return <p>Error: {error2.message}</p>;
+
+  //PRIMERAS TARJETAS (data) (logica)
+
+  const activityStates = data?.getActivityStateByDates || [];
+
+  const resueltas = activityStates.find(item => item.state === 'RESUELTA');
+  const enProceso = activityStates.find(item => item.state === 'EN.EJECUCION');
+  const enEspera = activityStates.find(item => item.state === 'EN.ESPERA');
+
+  const totalResueltas = resueltas ? resueltas.total : 0;
+  const totalenProceso = enProceso ? enProceso.total : 0;
+  const totalenEspera = enEspera ? enEspera.total : 0;
+
+  //SEGUNDAS TARJETAS (data2) (logica)
+
+const totals = data2.getActivityLoadByDates.reduce((acc: ActivityLoadModel, obj: ActivityLoadModel) => {
+  acc.activiadesAnteriores += obj.activiadesAnteriores;
+  acc.activiadesAsignadas += obj.activiadesAsignadas;
+  acc.activiadesImpactadas += obj.activiadesImpactadas;
+  acc.activiadesResueltas += obj.activiadesResueltas;
+  acc.activiadesTotal += obj.activiadesTotal;
+  return acc;
+}, {
+  activiadesAnteriores: 0,
+  activiadesAsignadas: 0,
+  activiadesImpactadas: 0,
+  activiadesResueltas: 0,
+  activiadesTotal: 0,
+});
+
+
   return (
     <div className=" grid border-1 border-gray3 rounded-10">
       {/*Header*/}
@@ -61,7 +142,7 @@ export const ActividadesDeHoy = () => {
             </p>
             <div className=" w-99.5 ml-10 border-b border-orange2"></div>
             <div className=" grid justify-center font-trebuchet font-bold text-32 text-black1">
-              1
+              {totalenEspera}
             </div>
           </div>
 
@@ -72,7 +153,7 @@ export const ActividadesDeHoy = () => {
             </p>
             <div className=" w-99.5 ml-10 border-b border-red3"></div>
             <div className=" grid justify-center font-trebuchet font-bold text-32 text-black1">
-              1
+              0
             </div>
           </div>
 
@@ -83,18 +164,18 @@ export const ActividadesDeHoy = () => {
             </p>
             <div className=" w-99.5 ml-10 border-b border-cyan2"></div>
             <div className=" grid justify-center font-trebuchet font-bold text-32 text-black1">
-              4
+              {totalenProceso}
             </div>
           </div>
 
           {/*Overview*/}
           <div className=" card4 w-119.5 h-80 rounded-10 bg-green4">
             <p className="  ml-10 mt-10 font-verdana text-12 text-black1">
-              Resueltas hoy{" "}
+              Resueltas{" "}
             </p>
             <div className=" w-99.5 ml-10 border-b border-green1"></div>
             <div className=" grid justify-center font-trebuchet font-bold text-32 text-black1">
-              1
+              {totalResueltas}
             </div>
           </div>
         </div>
@@ -104,44 +185,44 @@ export const ActividadesDeHoy = () => {
           {/*Overview*/}
           <div className=" card5 w-119.5 h-80  rounded-10 bg-purple1">
             <p className="  ml-10 mt-10 font-verdana text-12 text-black1">
-              En espera{" "}
+              Nuevas{" "}
             </p>
             <div className=" w-99.5 ml-10 border-b border-purple2"></div>
             <div className=" grid justify-center font-trebuchet font-bold text-32 text-black1">
-              2
+            {totals.activiadesAsignadas}
             </div>
           </div>
 
           {/*Overview*/}
           <div className=" card6 w-119.5 h-80 ml-13 rounded-10 bg-purple1">
             <p className="  ml-10 mt-10 font-verdana text-12 text-black1">
-              Replicadas{" "}
+              Previas{" "}
             </p>
             <div className=" w-99.5 ml-10 border-b border-purple2"></div>
             <div className=" grid justify-center font-trebuchet font-bold text-32 text-black1">
-              2
+            {totals.activiadesAnteriores}
             </div>
           </div>
 
           {/*Overview*/}
           <div className=" card7 w-119.5 h-80 ml-12 rounded-10 bg-purple1">
             <p className="  ml-10 mt-10 font-verdana text-12 text-black1">
-              En proceso{" "}
+              Impactadas{" "}
             </p>
             <div className=" w-99.5 ml-10 border-b border-purple2"></div>
             <div className=" grid justify-center font-trebuchet font-bold text-32 text-black1">
-              5
+            {totals.activiadesImpactadas}
             </div>
           </div>
 
           {/*Overview*/}
           <div className=" card8 w-119.5 h-80 ml-12 rounded-10 bg-purple1">
-            <p className="  ml-10 mt-10 font-verdana text-12 text-black1">
-              Resueltas hoy{" "}
+            <p className="  ml-10 mt-10 font-verdana font-bold text-12 text-black">
+              TOTAL{" "}
             </p>
             <div className=" w-99.5 ml-10 border-b border-purple2"></div>
             <div className=" grid justify-center font-trebuchet font-bold text-32 text-black1">
-              5
+            {totals.activiadesTotal}
             </div>
           </div>
         </div>

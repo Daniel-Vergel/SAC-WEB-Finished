@@ -70,7 +70,7 @@ export const Grilla = () => {
     },
   });
 
-  console.log(data);
+
   const table = useReactTable({
     data: data?.getCurrentActivities ?? {},
     columns: Columns,

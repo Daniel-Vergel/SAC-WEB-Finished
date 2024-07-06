@@ -6,7 +6,7 @@ export const GET_ACTIVITY_STATE_BY_DATES = gql`
       id
       state
       total
-      __typename
+
     }
   }
 `;
