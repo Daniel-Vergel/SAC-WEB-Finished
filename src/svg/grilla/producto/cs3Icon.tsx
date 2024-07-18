@@ -1,4 +1,4 @@
-export const Cs3Icon = () => {
+export const IconGRL = () => {
   return (
     <svg
       className=" mr-17"

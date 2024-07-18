@@ -1,7 +1,7 @@
 
 import Select from "react-select";
-import { RootState } from "../../../store/store";
-import { useDispatch, useSelector } from "react-redux";
+// import { RootState } from "../../../store/store";
+import { useDispatch, /*useSelector*/} from "react-redux";
 import { setChangeMonths } from "../../../store/inputMonths/inputMonthsState";
 
 interface OptionType {
@@ -18,18 +18,14 @@ const optionsMonths: OptionType[] = [
   
 export const InputSelectMonths = () => {
 
-  const { months } = useSelector((state: RootState) => state.inputMonthsState);
+ // const { months } = useSelector((state: RootState) => state.inputMonthsState);
   const dispatch = useDispatch()
-
-
-
 
    // Función para manejar el cambio de selección
    const handleSelectChange = (selectedOption: OptionType | null) => {
     dispatch(setChangeMonths(selectedOption?.value ?? null))
    };
 
-   console.log(months)
   return (
     <div className=" ml-21 font-roboto text-16 text-gray8">
         <Select 

@@ -32,6 +32,8 @@ import { GET_CURRENT_ACTIVITIES } from "../../../gql/GET-ACTIVITIES";
 import { Columns } from "./columns";
 import FilteringRows from "./FilteringRows";
 import SortingFilteringBox from "./SortingFilteringBox";
+import { GrillaSqueleton } from "../../squeletons/grillaSqueletons/grillaSqueleton";
+
 
 export const Grilla = () => {
   // const [currentPage, setCurrentPage] = useState<number>(1);
@@ -40,7 +42,7 @@ export const Grilla = () => {
     (state: RootState) => state.PaginationState
   );
 
-  const [totalPages, setTotalPages] = useState(0);
+  console.log("ESTADO DE LA PAGINA", currentPage)
 
   const { inputValue } = useSelector((state: RootState) => state.valueState);
 
@@ -63,13 +65,8 @@ export const Grilla = () => {
       },
     },
 
-    onCompleted: (data) => {
-      const totalCount = data.getCurrentActivities.length;
-      const pages = Math.ceil(totalCount / 4);
-      setTotalPages(pages);
-    },
+   
   });
-
 
   const table = useReactTable({
     data: data?.getCurrentActivities ?? {},
@@ -84,7 +81,7 @@ export const Grilla = () => {
   });
 
   if (error) return <p> Error: {error.message}</p>;
-  if (loading) return <p> Recuperando personas </p>;
+  if (loading) return <GrillaSqueleton/>;
 
   return (
     <>

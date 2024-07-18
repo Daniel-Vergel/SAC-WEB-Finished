@@ -9,6 +9,8 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { endOfMonthSix, startOfMonthSix } from "./fechas/meses/SixMonths/getStartAndEndOfLastSixMonths";
 import { endOfMonthNine, startOfMonthNine } from "./fechas/meses/NineMonths/getStartAndEndOfLastNineMonths";
+import { CalificacionSqueleton } from "../squeletons/calificacion/calificacionSqueleton";
+
 
 
 
@@ -44,6 +46,7 @@ export const CalifDelCliente = () => {
   // Convierte las fechas de inicio y fin en objetos Date si es necesario
   let fechaDeInicio = inicio;
   let fechaFinal = fin;
+  
 
   const { data, loading, error } = useQuery(GET_ACTIVITY_RATING, {
     variables: {
@@ -55,7 +58,7 @@ export const CalifDelCliente = () => {
   });
 
   
-  if (loading) return <p>Cargando...</p>;
+  if (loading) return <CalificacionSqueleton/>;
   if (error) return <p>Error: {error.message}</p>;
 
 

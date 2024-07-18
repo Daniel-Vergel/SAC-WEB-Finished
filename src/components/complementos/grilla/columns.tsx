@@ -6,11 +6,28 @@ import { StatusMediumIcon } from "../../../svg/prioridad/statusMediumIcon";
 import { StatusHighIcon } from "../../../svg/prioridad/statusHighIcon";
 import { StatusLowIcon } from "../../../svg/prioridad/StatusLowIcon";
 import { MenuIcon } from "../../../svg/menuIconGrilla";
-import { Cs3Icon } from "../../../svg/cs3Icon";
+
 import { ActivityView } from "../../../_generated_/graphql";
+import { IconGRL } from "../../../svg/grilla/producto/cs3Icon";
+import { IconSWT } from "../../../svg/grilla/producto/IconSWT";
+import { IconSAC } from "../../../svg/grilla/producto/IconSAC";
 //import { ButtonActivity } from "./buttomActivity";
 
 type Maybe<T> = T | null | undefined;
+type IconPrefix = 'SWT' | 'SAC' | 'GRL'
+
+const iconMap: Record<IconPrefix, JSX.Element> = {
+  SWT: <IconSWT />,  // Reemplaza con tu icono correspondiente
+  SAC: <IconSAC />,
+  GRL: <IconGRL />,
+  // Agrega más combinaciones según sea necesario
+};
+
+const getIconByPrefix = (value: string): JSX.Element => {
+  const prefix = value.substring(0, 3).toUpperCase() as IconPrefix; // Asegúrate de que sea un tipo válido
+
+  return iconMap[prefix] || <IconGRL />; // Icono por defecto si no coincide
+};
 
 const columnHelper = createColumnHelper<ActivityView>();
 
@@ -26,20 +43,22 @@ export const Columns = [
 
   columnHelper.accessor("bitTicket", {
     header: () => (
-      <>
-        <div className="flex">
-          <p className=" ">Ticket</p>
-        </div>
-      </>
+      <div className="flex">
+        <p>Ticket</p>
+      </div>
     ),
-    cell: (info) => (
-      <>
-        <div className="flex items-center  font-verdana font-bold text-12 ">
-          <Cs3Icon />
-          {info.getValue()}
+    cell: (info) => {
+      const value = info.getValue() || "";
+  
+      return (
+        <div className="flex items-center font-verdana font-bold text-12">
+          <div className="flex-shrink-0">
+            {getIconByPrefix(value)} {/* Renderiza el icono correspondiente */}
+          </div>
+          <span className="ml-2 whitespace-nowrap">{value}</span>
         </div>
-      </>
-    ),
+      );
+    },
   }),
 
   columnHelper.accessor("clientName", {

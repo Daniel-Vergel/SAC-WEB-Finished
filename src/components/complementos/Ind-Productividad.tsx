@@ -7,6 +7,8 @@ import { RootState } from "../../store/store";
 import { useSelector } from "react-redux";
 import { endOfMonthSix, startOfMonthSix } from "./fechas/meses/SixMonths/getStartAndEndOfLastSixMonths";
 import { endOfMonthNine, startOfMonthNine } from "./fechas/meses/NineMonths/getStartAndEndOfLastNineMonths";
+import { SqueletonIndiceProductividad } from "../squeletons/indiceProductividad/SqueletonIndiceProductividad";
+
 
 
 //import { useEffect, useState } from "react";
@@ -55,8 +57,8 @@ export const IndProductividad = () => {
     },
   });
 
-  
-  if (loading) return <p>Cargando...</p>;
+  //console.log("DATA PRODUCTIVIDAD", data)
+  if (loading) return <SqueletonIndiceProductividad/>;
   if (error) return <p>Error: {error.message}</p>;
 
 

@@ -1,32 +1,59 @@
+import { useQuery } from "@apollo/client";
 import { Cell, Pie, PieChart } from "recharts";
+import { GET_STATICTEAM } from "../gql/GET-STATICTEAM";
+import { SqueletonIndDeProductividad } from "./squeletons/indiceProductividadEquipo/IndProducEq";
 
-{
-  /* EJEMPLO */
-}
-const data01 = [
-  {
-    name: "Escalados a Coord.",
-    value: 6,
-    color: "#3E4EB8",
-  },
-  {
-    name: "En proceso",
-    value: 29,
-    color: "#03BAD9",
-  },
-  {
-    name: "En espera",
-    value: 23,
-    color: "#EF6A1F",
-  },
-  {
-    name: "Resueltos",
-    value: 997,
-    color: "#00E0A4",
-  },
-];
+
 
 export const IndDeProductividad = () => {
+
+  const now = new Date(); // Obtener la fecha y hora actual
+  const formattedDate = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0)).toISOString();
+  const currentDate = formattedDate.split('T')[0]; // Obtener solo la parte de la fecha (YYYY-MM-DD)
+  
+  
+  const { data, loading, error } = useQuery(GET_STATICTEAM, {
+    variables: {
+       prdCod: 9,
+      startDate: currentDate,
+      }
+    },
+  );
+
+  if (loading) return <SqueletonIndDeProductividad/>;
+  if (error) return <p>Error: {error.message}</p>;
+
+ 
+
+  const staticData = data?.staticTeam[0] 
+
+  const totalStaticTeam = staticData?.en_cordinacion + staticData?.en_proceso + staticData?.en_espera + staticData?.resuelta
+
+  const data01 = [
+    {
+      name: "Escalados a Coord.",
+      value: staticData?.en_cordinacion || 0,
+      color: "#3E4EB8",
+    },
+    {
+      name: "En proceso",
+      value: staticData?.en_proceso || 0,
+      color: "#03BAD9",
+    },
+    {
+      name: "En espera",
+      value: staticData?.en_espera || 0,
+      color: "#EF6A1F",
+    },
+    {
+      name: "Resueltos",
+      value: staticData?.resuelta || 0,
+      color: "#00E0A4",
+    },
+  ];
+
+  const efectividad = parseInt(((staticData?.resuelta / totalStaticTeam) * 100).toFixed(0));
+
   return (
     <>
       {/*Indice de Productividad*/}
@@ -73,7 +100,7 @@ export const IndDeProductividad = () => {
                 {/*frame 1128*/}
                 <div className=" flex ml-5 w-46 h-28 translate-x-10 ">
                   <p className=" flex font-trebuchet font-bold text-24 text-black1 -mt-5">
-                    97%
+                    {efectividad}%
                   </p>
                 </div>
 
@@ -91,7 +118,7 @@ export const IndDeProductividad = () => {
               {/*frame 7*/}
               <div className=" grid grid-flow-col font-trebuchet font-bold text-16   ">
                 <div className=" grid tracking-1  ">Actividades SWIT</div>
-                <div className="grid justify-end  tracking-1  ">1055</div>
+                <div className="grid justify-end  tracking-1  ">{totalStaticTeam || 0}</div>
               </div>
 
               {/*frame 12*/}
@@ -103,7 +130,7 @@ export const IndDeProductividad = () => {
 
                 <div className=" flex ml-23  ">Escalados a Coord.</div>
 
-                <div className=" grid justify-end tracking-1  ">6</div>
+                <div className=" grid justify-end tracking-1  ">{staticData?.en_cordinacion || 0}</div>
               </div>
 
               {/*frame 10*/}
@@ -115,7 +142,7 @@ export const IndDeProductividad = () => {
 
                 <div className=" flex ml-23  ">En proceso</div>
 
-                <div className=" grid justify-end tracking-1  ">23</div>
+                <div className=" grid justify-end tracking-1  ">{staticData?.en_proceso || 0}</div>
               </div>
 
               {/*frame 13*/}
@@ -127,7 +154,7 @@ export const IndDeProductividad = () => {
 
                 <div className=" flex ml-23  ">En espera</div>
 
-                <div className=" grid justify-end tracking-1  ">29</div>
+                <div className=" grid justify-end tracking-1  ">{staticData?.en_espera || 0}</div>
               </div>
 
               {/*frame 14*/}
@@ -139,7 +166,7 @@ export const IndDeProductividad = () => {
 
                 <div className=" flex ml-23  ">Resueltos</div>
 
-                <div className=" grid justify-end tracking-1  ">997</div>
+                <div className=" grid justify-end tracking-1  ">{staticData?.resuelta || 0}</div>
               </div>
             </div>
           </div>
@@ -151,7 +178,7 @@ export const IndDeProductividad = () => {
                 Actividades de hoy
               </div>
               <div className="flex justify-end font-trebuchet font-bold text-16">
-                19
+                {staticData?.hoy || 0 }
               </div>
             </div>
             <div className=" grid grid-flow-col   ">
@@ -159,7 +186,7 @@ export const IndDeProductividad = () => {
                 Actividades de previas
               </div>
               <div className="flex justify-end font-trebuchet font-bold text-16">
-                39
+                {staticData?.antes || 0}
               </div>
             </div>
             <div className=" grid grid-flow-col  ">
@@ -167,7 +194,7 @@ export const IndDeProductividad = () => {
                 Actividades de Impactadas
               </div>
               <div className="flex justify-end font-trebuchet font-bold text-16">
-                35
+                {staticData?.impactadas || 0}
               </div>
             </div>
           </div>

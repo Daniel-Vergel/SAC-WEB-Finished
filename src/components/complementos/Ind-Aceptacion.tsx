@@ -7,6 +7,8 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { endOfMonthSix, startOfMonthSix } from "./fechas/meses/SixMonths/getStartAndEndOfLastSixMonths";
 import { endOfMonthNine, startOfMonthNine } from "./fechas/meses/NineMonths/getStartAndEndOfLastNineMonths";
+import { AceptacionSqueleton } from "../squeletons/aceptacion/aceptacionSqueleton";
+
 
 
 export const IndAceptacion = () => {
@@ -43,9 +45,9 @@ export const IndAceptacion = () => {
       },
     },
   });
-  //console.log(data)
+  //console.log("ACEPTACION", data)
 
-  if (loading) return <p>Cargando...</p>;
+  if (loading) return <AceptacionSqueleton/>;
   if (error) return <p>Error: {error.message}</p>;
 
   const activityData = data?.getActivityRejectByDates[0];

@@ -1,7 +1,8 @@
-import { TopItem } from "./complementos/Top-Item";
-import { TopItem2 } from "./complementos/Top-Item2";
+import RankingComponent from "./complementos/Top-Item";
+import RankingComponent2 from "./complementos/Top-Item2";
 
 export const TopDeConsultores = () => {
+
   return (
     <>
       {/*Main Contenedor*/}
@@ -124,21 +125,14 @@ export const TopDeConsultores = () => {
         {/*Cuerpo*/}
         <div className=" flex flex-col h-571 ml-10 mr-10 mt-16 overflow-auto scrollbar-webkit border-2 border-gray6 ">
           <div className=" flex flex-col h-571 mr-7 ">
-            <TopItem />
-            <TopItem />
-            <TopItem />
-            <TopItem />
-            <TopItem />
-            <TopItem />
-            <TopItem />
-            <TopItem />
-            <TopItem />
+            <RankingComponent />
+           
           </div>
         </div>
 
         {/*Consultor Principal*/}
         <div className="ml-10 mr-10 mt-14 bg-blue3">
-          <TopItem2 />
+          <RankingComponent2 />
         </div>
       </div>
     </>

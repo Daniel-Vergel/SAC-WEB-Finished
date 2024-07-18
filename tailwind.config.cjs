@@ -171,6 +171,7 @@ module.exports = {
         64: "64px",
         61: "61px",
         60: "60px",
+        59: "59px",
         56: "56px",
         53: "53px",
         52: "52px",
@@ -292,8 +293,14 @@ module.exports = {
         gray7: "#BFBFBF",
         gray8: "#383838",
         gray9: "#595959",
+        gray10: "#EDEDED",
+
+        
 
         black1: "#222222",
+        black2: "#4B4B4B",
+
+        
 
         cyan1: "#00BCD7",
         cyan2: "#078BCD",
@@ -309,12 +316,19 @@ module.exports = {
         blue3: "#E6F3FA",
         blue4: "#3E4EB8",
         blue5: "#3E587C",
+        blue6: "#E2E6EB",
+
+        
 
         orange1: "#F7A32D",
         orange2: "#EF6A1F",
         orange3: "#FDF0E9",
         orange4: "#FEF1E0",
+        orange5: "#D9743C",
+        orange6: "#FAE2D5",
 
+
+        
         green1: "#00BB89",
         green2: "#E6F8F3",
         green3: "#00E0A4",
