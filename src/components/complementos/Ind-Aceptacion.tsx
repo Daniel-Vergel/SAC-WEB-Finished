@@ -44,13 +44,14 @@ export const IndAceptacion = () => {
         FecFin: fechaFinal
       },
     },
+    fetchPolicy: 'no-cache', 
   });
   //console.log("ACEPTACION", data)
 
   if (loading) return <AceptacionSqueleton/>;
   if (error) return <p>Error: {error.message}</p>;
 
-  const activityData = data?.getActivityRejectByDates[0];
+  const activityData = data?.getActivityRejectByDates[0] ?? [];
 
 const data01 = [
   {
@@ -123,7 +124,7 @@ const efectividad = (tareasAceptadas / totalTareas) * 100;
               {/*frame 1128*/}
               <div className=" w-46 h-28 translate-x-10 ">
                 <p className="grid justify-center font-trebuchet font-bold text-24 text-black1 -mt-5">
-                  {efectividad}% 
+                  {efectividad || 0}% 
                 </p>
               </div>
 
@@ -145,7 +146,7 @@ const efectividad = (tareasAceptadas / totalTareas) * 100;
                 <div className=" grid tracking-1  ">
                   Total de actividades asignadas
                 </div>
-                <div className="grid justify-end  tracking-1  ">{activityData.total}</div>
+                <div className="grid justify-end  tracking-1  ">{activityData.total || 0}</div>
               </div>
 
               {/*frame 10*/}

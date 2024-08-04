@@ -17,6 +17,7 @@ export const Bienvenido = () => {
     if (loading) return <BienvenidoSqueleton/>;
     if (error) return <p>Error: {error.message}</p>;
 
+    console.log ("DATA DE BIENVENIDO", data)
     const decodedToken2 = getDecodedToken();
     const userName = decodedToken2 ? decodedToken2.userLongName : "Usuario"
     
@@ -90,7 +91,7 @@ export const Bienvenido = () => {
         </div>
 
         <p className=" -mt-10 text-32 font-trebuchet  text-blue1">
-            {personaEspecifica.cargo || "Cargo no especificado"}
+            { "Cargo no especificado"}
         </p>
         <p className=" text-16 font-trebuchet  text-blue1">
           {formattedDate.dayName}, {formattedDate.dayNumber} de {formattedDate.monthName} de {formattedDate.year}

@@ -2,24 +2,37 @@ import { useEffect, useRef, useState } from "react";
 import { PiSortDescending } from "react-icons/pi";
 import { PiSortAscendingLight } from "react-icons/pi";
 import { useDispatch, useSelector } from "react-redux";
+import { EnProceso } from "../../../../svg/grilla/estado/enProceso";
+import { EnEspera } from "../../../../svg/grilla/estado/enEspera";
+import { Resuelto } from "../../../../svg/grilla/estado/resuelto";
+import { Vencido } from "../../../../svg/grilla/estado/vencido";
+import { Devuelto } from "../../../../svg/grilla/estado/devuelto";
+import { RootState } from "../../../../store/store";
+import { toggleState } from "../../../../store/grillaState.tsx/SelectedStates";
 
-import { RootState } from "../../../store/store";
-import { setInputValue } from "../../../store/inputValue/valueState";
 
-const SortingFilteringBox = () => {
-  const { inputValue } = useSelector((state: RootState) => state.valueState);
+interface SortingFilteringBoxProps {
+  requestSort: (key: string, direction: 'asc' | 'desc') => void;
+}
 
-  const dispatch = useDispatch();
+const SortingFilteringState: React.FC<SortingFilteringBoxProps> = ({ requestSort }) => {
 
   const [isOpen, setIsOpen] = useState(false);
-
   const sortingFilteringRef = useRef(null);
+  const [direction, setDirection] = useState<'asc' | 'desc'>('asc');
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value =
-      e.target.type === "number" ? parseFloat(e.target.value) : e.target.value;
-    dispatch(setInputValue(value));
+  const dispatch = useDispatch();
+  const selectedStates = useSelector((state: RootState) => state.selectedStates.value);
+
+  //console.log("ESTADOS ",selectedStates)
+
+  const handleSortBy = (direction: 'asc' | 'desc') => {
+    // Aquí asumes que "clientName" es la clave por la cual quieres ordenar, puedes ajustarlo según tus necesidades
+    setDirection(direction);
+    //console.log(`Ordenamiento: ${direction}`);
+    requestSort('state', direction);
   };
+
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -43,11 +56,26 @@ const SortingFilteringBox = () => {
     setIsOpen(!isOpen);
   };
 
+  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    dispatch(toggleState(value));
+  };
+
+  const stateOptions = [
+    { value: 'EN.EJECUCION', label: <EnProceso/> },
+    { value: 'EN.ESPERA', label: <EnEspera/> },
+    { value: 'RESUELTA', label: <Resuelto/> },
+    { value: 'BORRADOR', label: <Vencido/> },
+    { value: 'DEVUELTA', label: <Devuelto/> }
+
+  ];
+
   return (
-    <div className=" " ref={sortingFilteringRef}>
+    <div className="  " ref={sortingFilteringRef}>
       <button onClick={toggleBox} className=" text-black  ">
+        <div >
         <svg
-          className="mt-5 ml-16"
+          className={`mt-5 ml-16 rounded-4 transform ${direction === 'desc' ? 'rotate-180' : ''}`}
           width="20"
           height="20"
           viewBox="0 0 20 20"
@@ -67,6 +95,7 @@ const SortingFilteringBox = () => {
             fill="#4B4B4B"
           />
         </svg>
+        </div>
       </button>
 
       {isOpen && (
@@ -77,14 +106,14 @@ const SortingFilteringBox = () => {
             </h2>
             <div className="flex flex-col font-worksans text-14 mt-2">
               <button
-                //onClick={() => handleSortBy("asc")}
+                onClick={() => handleSortBy("asc")}
                 className="px-3 py-1 rounded flex justify-start text-gray2 hover:bg-gray-200"
               >
                 <PiSortDescending className=" mt-4 mr-10 text-black " />
                 Orden ascendente
               </button>
               <button
-                //onClick={() => handleSortBy("desc")}
+                onClick={() => handleSortBy("desc")}
                 className="px-3 py-1 rounded flex justify-start text-gray2 hover:bg-gray-200"
               >
                 <PiSortAscendingLight className=" mt-4 mr-10 text-black " />
@@ -93,16 +122,23 @@ const SortingFilteringBox = () => {
             </div>
           </div>
           <div className="mt-4">
-            <h2 className="mt-2 font-worksans text-14 font-bold  text-black">
-              Buscar por:
+            <h2 className="mt-2 font-worksans text-14 font-bold text-black">
+              Seleccionar Estado
             </h2>
-            <input
-              type="text"
-              value={inputValue}
-              onChange={handleChange}
-              className="mt-2 mb-2  px-3 py-2 border border-gray-300 rounded"
-              placeholder="Cualquier cosa..."
-            />
+            <div className="flex flex-col font-roboto text-16 text-gray8">
+              {stateOptions.map((option) => (
+                <label key={option.value} className="flex items-center mt-2">
+                  <input
+                    type="checkbox"
+                    value={option.value}
+                    checked={selectedStates.includes(option.value)}
+                    onChange={handleCheckboxChange}
+                    className="mr-2"
+                  />
+                  {option.label}
+                </label>
+              ))}
+            </div>
           </div>
         </div>
       )}
@@ -110,4 +146,4 @@ const SortingFilteringBox = () => {
   );
 };
 
-export default SortingFilteringBox;
+export default SortingFilteringState;

@@ -46,6 +46,9 @@ export const CalifDelCliente = () => {
   // Convierte las fechas de inicio y fin en objetos Date si es necesario
   let fechaDeInicio = inicio;
   let fechaFinal = fin;
+
+  //console.log ("FECHA DE INICIO", fechaDeInicio)
+  //console.log ("FECHA DE final", fechaFinal) 
   
 
   const { data, loading, error } = useQuery(GET_ACTIVITY_RATING, {
@@ -55,12 +58,14 @@ export const CalifDelCliente = () => {
         FecFin: fechaFinal
       },
     },
+    fetchPolicy: 'no-cache',
   });
 
   
   if (loading) return <CalificacionSqueleton/>;
   if (error) return <p>Error: {error.message}</p>;
 
+  //console.log ("DATA RNKING", data)
 
 
   const data01 = data?.getActivityRatingByDates || [];
